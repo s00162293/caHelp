@@ -41,6 +41,7 @@ namespace Rad301ClubsV1.Migrations
                 PasswordHash = new PasswordHasher().HashPassword("Ss1234567$1"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             });
+         
 
             context.Users.AddOrUpdate(u => u.Email, new ApplicationUser
             {
@@ -63,6 +64,7 @@ namespace Rad301ClubsV1.Migrations
                 PasswordHash = new PasswordHasher().HashPassword("SS00000001$1"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             });
+            context.SaveChanges(); //save copy to db and find by email
 
             ApplicationUser admin = manager.FindByEmail("powell.paul@itsligo.ie");
             if (admin != null)
