@@ -22,27 +22,25 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
         protected override void Seed(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
             seedClubs(context);
-           // seedStudents(context);
+            //seedStudents(context);
         }
 
         private void seedClubs(ClubContext context)
         {
-            // throw new NotImplementedException();
-          //  List<Member> selectedMembers = SeedMembers(context);
             #region club1
             context.Clubs.AddOrUpdate(c => c.ClubName,
                         new Club
                         {
                             ClubName = "The Tiddly Winks Club",
                             CreationDate = DateTime.Now,
-                            adminID = 1,
-                            clubMembers = SeedMembers(context),
+                            adminID = -1,
+                            //clubMembers = SeedMembers(context),
                             clubEvents = new List<ClubEvent>()
                         {	// Create a new ClubEvent 
                         new ClubEvent { StartDateTime = DateTime.Now.Subtract( new TimeSpan(5,0,0,0,0)),
                            EndDateTime = DateTime.Now.Subtract( new TimeSpan(5,0,0,0,0)),
                            Location="Sligo", Venue="Arena",
-                          // attendees = selectedMembers // You’ll need to comment this out on subsequent seeds
+                          // attendees = selectedMembers // You?ll need to comment this out on subsequent seeds
                         },
                         new ClubEvent { StartDateTime = DateTime.Now.Subtract( new TimeSpan(3,0,0,0,0)),
                            EndDateTime = DateTime.Now.Subtract( new TimeSpan(3,0,0,0,0)),
@@ -51,13 +49,18 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                         }
                         });
             #endregion
-         //   context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
+               context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
 
             #region club2
             context.Clubs.AddOrUpdate(c => c.ClubName,
-                new Club { ClubName = "The Chess Club", CreationDate = DateTime.Now });
-            #endregion
-            context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
+                new Club {
+                    ClubName = "The Chess Club",
+                    CreationDate = DateTime.Now,
+                    adminID = -1,
+                    clubMembers = SeedMembers(context)
+                });
+                    #endregion
+                    context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
 
         }
 
@@ -70,7 +73,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             foreach (string s in subset)
             {
                 selectedMembers.Add(
-                   new Member { StudentID = s}
+                   new Member { StudentID = s }
                    );
             }
             return selectedMembers;
@@ -94,7 +97,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
         }
 
 
-       
+
     }
 
 }
