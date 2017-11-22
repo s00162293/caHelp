@@ -26,7 +26,6 @@ namespace Rad301ClubsV1.Migrations
                     new RoleStore<IdentityRole>(context));
 
 
-
             roleManager.Create(new IdentityRole { Name = "Admin" });
             roleManager.Create(new IdentityRole { Name = "ClubAdmin" });
             roleManager.Create(new IdentityRole { Name = "Member" });
@@ -86,6 +85,20 @@ namespace Rad301ClubsV1.Migrations
             {
                 manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
             }
+/*
+ * 
+            ApplicationUser clubAdmin = manager.FindByEmail("S00000010@mail.itsligo.ie");
+            if (manager.FindByEmail("S00000010@mail.itsligo.ie") != null)
+            {
+                manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
+            }
+
+            ApplicationUser clubAdmin = manager.FindByEmail("S00000014@mail.itsligo.ie");
+            if (manager.FindByEmail("S00000014@mail.itsligo.ie") != null)
+            {
+                manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
+            }
+*/
 
         }
     }

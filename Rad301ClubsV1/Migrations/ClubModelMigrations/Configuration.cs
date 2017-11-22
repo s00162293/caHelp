@@ -1,6 +1,9 @@
 namespace Rad301ClubsV1.Migrations.ClubModelMigrations
 {
     using CsvHelper;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Models;
     using Models.ClubModel;
     using System;
     using System.Collections.Generic;
@@ -19,11 +22,16 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             MigrationsDirectory = @"Migrations\ClubModelMigrations";
         }
 
+
+
+
         protected override void Seed(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
             seedStudents(context);
             seedClubs(context);     
             SeedClubMembers(context);
+            seedAdmin(context);
+
         }
 
         private void seedClubs(ClubContext context)
@@ -125,7 +133,6 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             context.SaveChanges();
         }
 
-
         //random students method
         private List<Student> GetStudents(ClubContext context)
         {
@@ -138,7 +145,43 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             return context.Students.Where(s => subset.Contains(s.StudentID)).ToList();
         }
 
+     //seed admin
+        private void seedAdmin(ClubContext context)
+        {
+            List<Club> clubs = context.Clubs.Include("clubMembers").ToList();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                //get the first
+                var manager =
+               new UserManager<ApplicationUser>(
+                   new UserStore<ApplicationUser>(db));
 
+                foreach (Club c in clubs)
+                {
+                    c.adminID = c.clubMembers.First().memberID;
+
+                    db.Users.AddOrUpdate(u => u.Email, new ApplicationUser
+                    {
+                        StudentID = c.clubMembers.First().StudentID,
+                        Email = c.clubMembers.First().StudentID + "@mail.itsligo.ie",
+                        DateJoined = DateTime.Now,
+                        EmailConfirmed = true,
+                        UserName = c.clubMembers.First().StudentID + "@mail.itsligo.ie",
+                        PasswordHash = new PasswordHasher().HashPassword(c.clubMembers.First().StudentID + "$1"),
+                        SecurityStamp = Guid.NewGuid().ToString(),
+                    });
+                    db.SaveChanges();
+
+                    ApplicationUser user = manager.FindByEmail(c.clubMembers.First().StudentID + "@mail.itsligo.ie");
+                    if (user != null)                
+                      manager.AddToRole(user.Id, "ClubAdmin");               
+                    
+                }
+                context.Clubs.AddOrUpdate(c => c.ClubName, clubs.ToArray());
+            }
+
+        
+        }
 
     }
 
