@@ -21,8 +21,9 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
 
         protected override void Seed(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
-            seedClubs(context);
-            //seedStudents(context);
+            seedStudents(context);
+            seedClubs(context);     
+            SeedClubMembers(context);
         }
 
         private void seedClubs(ClubContext context)
@@ -49,7 +50,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                         }
                         });
             #endregion
-               context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
+            //   context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
 
             #region club2
             context.Clubs.AddOrUpdate(c => c.ClubName,
@@ -57,13 +58,15 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                     ClubName = "The Chess Club",
                     CreationDate = DateTime.Now,
                     adminID = -1,
-                    clubMembers = SeedMembers(context)
+                    // clubMembers = SeedMembers(context)
+
+                    //clubMembers = GetStudents(context)
                 });
                     #endregion
                     context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
 
         }
-
+        /*
         private static List<Member> SeedMembers(ClubContext context)
         {
             List<Member> selectedMembers = new List<Member>();
@@ -77,7 +80,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                    );
             }
             return selectedMembers;
-        }
+        } */
         public void seedStudents(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -94,6 +97,45 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                 }
 
             }
+        }
+
+        //seed new club member
+        private void SeedClubMembers(ClubContext context)
+        {
+            // Create a list to hold students
+            List<Student> selectedStudents = new List<Student>();
+
+            //save newly created clubs first , then retrieve them as a list
+            foreach (var club in context.Clubs.ToList())
+            {
+                //set member if not set yet
+                if (club.clubMembers== null ||  club.clubMembers.Count() < 1)
+                {
+                    //set randoms one --method below
+                    selectedStudents = GetStudents(context);
+                    foreach (var m in selectedStudents)
+                    {
+                        //new member with a ref to a club ,EF will join fields later
+                        context.members.AddOrUpdate(member => member.StudentID,
+                            new Member { ClubId = club.ClubId, StudentID= m.StudentID});
+
+                    }
+                }
+            }     
+            context.SaveChanges();
+        }
+
+
+        //random students method
+        private List<Student> GetStudents(ClubContext context)
+        {
+            //random list of srudent ids
+            var randomSetStudent = context.Students.Select(s => new { s.StudentID, r = Guid.NewGuid() });
+            //sort and take 10
+            List<string> subset = randomSetStudent.OrderBy(s => s.r)
+                .Select(s => s.StudentID.ToString()).Take(10).ToList();
+            //return sel students as a relaized list
+            return context.Students.Where(s => subset.Contains(s.StudentID)).ToList();
         }
 
 

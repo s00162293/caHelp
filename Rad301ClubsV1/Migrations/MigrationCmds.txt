@@ -2,4 +2,5 @@
 
 update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.Configuration //first run 
  
-update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.ClubModelMigrations.Configuration  //then this
+update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.ClubModelMigrations.Configuration  
+//then this
