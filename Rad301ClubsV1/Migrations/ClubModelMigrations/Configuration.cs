@@ -179,6 +179,9 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
         
         }
 
+        //seed courses
+
+
     }
 
 }
