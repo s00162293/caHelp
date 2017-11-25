@@ -1,9 +1,16 @@
 ﻿add-Migration -ConfigurationTypeName Rad301ClubsV1.Migrations.Configuration
 
 update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.Configuration
-
- //first run 
+//first run 
  
 update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.ClubModelMigrations.Configuration  
-
 //then this
+
+
+add-Migration -ConfigurationTypeName Rad301ClubsV1.Migrations.ClubModelMigrations.Configuration  
+//for add migration just put name
+
+
+
+update-database -ConfigurationTypeName Rad301ClubsV1.Migrations.ClubModelMigrations.Configuration -TargetMigration:0
+//to remove all migrations

@@ -22,16 +22,12 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             MigrationsDirectory = @"Migrations\ClubModelMigrations";
         }
 
-
-
-
         protected override void Seed(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
             seedStudents(context);
             seedClubs(context);     
             SeedClubMembers(context);
             seedAdmin(context);
-
         }
 
         private void seedClubs(ClubContext context)
@@ -145,7 +141,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             return context.Students.Where(s => subset.Contains(s.StudentID)).ToList();
         }
 
-     //seed admin
+        //seed admin
         private void seedAdmin(ClubContext context)
         {
             List<Club> clubs = context.Clubs.Include("clubMembers").ToList();

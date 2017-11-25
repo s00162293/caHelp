@@ -200,15 +200,22 @@
     <Compile Include="Migrations\ClubModelMigrations\201711211535156_initial-migration.Designer.cs">
       <DependentUpon>201711211535156_initial-migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ClubModelMigrations\201711251928012_add-courses.cs" />
+    <Compile Include="Migrations\ClubModelMigrations\201711251928012_add-courses.Designer.cs">
+      <DependentUpon>201711251928012_add-courses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ClubModelMigrations\Configuration.cs" />
+    <Compile Include="Migrations\ClubModelMigrations\CourseData.cs" />
     <Compile Include="Migrations\ClubModelMigrations\StudentData.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ClubModel\Club.cs" />
     <Compile Include="Models\ClubModel\ClubContext.cs" />
     <Compile Include="Models\ClubModel\ClubEvent.cs" />
+    <Compile Include="Models\ClubModel\Course.cs" />
     <Compile Include="Models\ClubModel\Members.cs" />
     <Compile Include="Models\ClubModel\Student.cs" />
+    <Compile Include="Models\ClubModel\StudentCourses.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -230,7 +237,11 @@
     <EmbeddedResource Include="Migrations\ClubModelMigrations\201711211535156_initial-migration.resx">
       <DependentUpon>201711211535156_initial-migration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ClubModelMigrations\201711251928012_add-courses.resx">
+      <DependentUpon>201711251928012_add-courses.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ClubModelMigrations\TestStudents.csv" />
+    <EmbeddedResource Include="Migrations\ClubModelMigrations\Courses.csv" />
     <None Include="Properties\PublishProfiles\pprad301ClubsApp - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\pprad301ClubsApp - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
