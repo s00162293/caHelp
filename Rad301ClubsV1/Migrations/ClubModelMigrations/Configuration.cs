@@ -24,10 +24,11 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
 
         protected override void Seed(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
-            seedStudents(context);
-            seedClubs(context);     
-            SeedClubMembers(context);
-            seedAdmin(context);
+         //   seedStudents(context);
+         //   seedClubs(context);     
+         //   SeedClubMembers(context);
+           // seedAdmin(context);
+            SeedCourses(context);
         }
 
         private void seedClubs(ClubContext context)
@@ -54,8 +55,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                         }
                         });
             #endregion
-            //   context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
-
+        
             #region club2
             context.Clubs.AddOrUpdate(c => c.ClubName,
                 new Club {
@@ -67,7 +67,7 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                     //clubMembers = GetStudents(context)
                 });
                     #endregion
-                    context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
+         context.SaveChanges(); // NOTE EF will update the relevant foreign key fields in the clubs, club events and member tables based on the attributes
 
         }
         /*
@@ -179,7 +179,36 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
         
         }
 
-        //seed courses
+        //seed courses details 
+        public static void SeedCourses(ClubContext context)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string resourceName = "Rad301ClubsV1.Migrations.ClubModelMigrations.Courses.csv";
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    CsvReader csvReader = new CsvReader(reader);
+                    csvReader.Configuration.HasHeaderRecord = false;
+                    var courseData = csvReader.GetRecords<CourseDataImport>().ToArray();
+                    foreach (var dataItem in courseData)
+                    {
+                        context.Courses.AddOrUpdate(c =>
+                                new { c.CourseCode, c.CourseName },
+                                new Course
+                                {
+                                    CourseCode = dataItem.CourseCode,
+                                    CourseName = dataItem.CourseName,
+                                    CourseYear = dataItem.Year
+                                });
+
+                    }
+                }
+            }
+            context.SaveChanges();
+        }
+
+
 
 
     }

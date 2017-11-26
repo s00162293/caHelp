@@ -85,20 +85,6 @@ namespace Rad301ClubsV1.Migrations
             {
                 manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
             }
-/*
- * 
-            ApplicationUser clubAdmin = manager.FindByEmail("S00000010@mail.itsligo.ie");
-            if (manager.FindByEmail("S00000010@mail.itsligo.ie") != null)
-            {
-                manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
-            }
-
-            ApplicationUser clubAdmin = manager.FindByEmail("S00000014@mail.itsligo.ie");
-            if (manager.FindByEmail("S00000014@mail.itsligo.ie") != null)
-            {
-                manager.AddToRoles(clubAdmin.Id, new string[] { "ClubAdmin" });
-            }
-*/
 
         }
     }

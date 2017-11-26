@@ -213,6 +213,7 @@
     <Compile Include="Models\ClubModel\ClubContext.cs" />
     <Compile Include="Models\ClubModel\ClubEvent.cs" />
     <Compile Include="Models\ClubModel\Course.cs" />
+    <Compile Include="Models\ClubModel\CourseDataImport.cs" />
     <Compile Include="Models\ClubModel\Members.cs" />
     <Compile Include="Models\ClubModel\Student.cs" />
     <Compile Include="Models\ClubModel\StudentCourses.cs" />
