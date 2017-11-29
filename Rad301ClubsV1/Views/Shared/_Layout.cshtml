@@ -30,6 +30,10 @@
                         <li>@Html.ActionLink("Maintain Clubs", "Index", "Clubs")</li>
                         <li>@Html.ActionLink("Maintain Students", "Index", "Students")</li>
                     }
+                    @if (User.IsInRole("ClubAdmin"))
+                    {
+                        <li>@Html.ActionLink("Club Member", "Index", "ClubMembers")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

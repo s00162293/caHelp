@@ -208,9 +208,21 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
             context.SaveChanges();
         }
 
+/*
+        //select random 4 students 
+        private List<Student> GetFourStudents(ClubContext context)
+        {
+            //random list of srudent ids
+            var randomSetStudent = context.Students.Select(s => new { s.StudentID, r = Guid.NewGuid() });
+            //sort and take 4
+            List<string> subset = randomSetStudent.OrderBy(s => s.r)
+                .Select(s => s.StudentID.ToString()).Take(4).ToList();
+            //return sel students as a relaized list
+            return context.Students.Where(s => subset.Contains(s.StudentID)).ToList();
 
+        }
 
-
+    */
     }
 
 }
