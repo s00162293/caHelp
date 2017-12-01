@@ -28,7 +28,8 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
          //   seedClubs(context);     
          //   SeedClubMembers(context);
            // seedAdmin(context);
-            SeedCourses(context);
+          //  SeedCourses(context);
+            seedStudentCourses(context);
         }
 
         private void seedClubs(ClubContext context)
@@ -201,28 +202,54 @@ namespace Rad301ClubsV1.Migrations.ClubModelMigrations
                                     CourseName = dataItem.CourseName,
                                     CourseYear = dataItem.Year
                                 });
-
                     }
                 }
             }
             context.SaveChanges();
         }
 
-/*
-        //select random 4 students 
-        private List<Student> GetFourStudents(ClubContext context)
+        // get list of 4 student objects who are not assignend to any course
+        private static List<Student> GetRandomCourselessStudents(Rad301ClubsV1.Models.ClubModel.ClubContext context)
         {
-            //random list of srudent ids
-            var randomSetStudent = context.Students.Select(s => new { s.StudentID, r = Guid.NewGuid() });
-            //sort and take 4
-            List<string> subset = randomSetStudent.OrderBy(s => s.r)
-                .Select(s => s.StudentID.ToString()).Take(4).ToList();
-            //return sel students as a relaized list
-            return context.Students.Where(s => subset.Contains(s.StudentID)).ToList();
+            //  students who are not in the studentCourses table
+            //  and create a list of student ids each with a new random id
+            var studentsWithoutCourses = context.Students
+                                    .Where(s => !context.StudentCourses
+                                    .Any(sc => sc.StudentID == s.StudentID))
+                                    .Select(student => new { student.StudentID, random = Guid.NewGuid() })
+                                    .ToList();
 
+            //  Order studentsWithoutCourses by random id and create a list of the top four
+            List<string> GetfourRandomStudents = studentsWithoutCourses
+                                        .OrderBy(s => s.random)
+                                        .Select(s => s.StudentID.ToString())
+                                        .Take(4).ToList();
+
+            //  Return the list of student objects for the random 4
+            return context.Students.Where(s => GetfourRandomStudents
+                                            .Contains(s.StudentID))
+                                            .ToList();
         }
 
-    */
+        //  Seed StudentCourses Table
+        private void seedStudentCourses(ClubContext context)
+        {
+            List<Student> selectedStudents = new List<Student>();
+            //  seed 5 courses
+            int n = 1;
+            while (n < 6)
+            {
+                //  GetRandomCourselessStudents returns four random courless students
+                selectedStudents = GetRandomCourselessStudents(context);
+                foreach (var s in selectedStudents)
+                {
+                    context.StudentCourses.AddOrUpdate(student => student.StudentID,
+                        new StudentCourses { CourseID = n, StudentID = s.StudentID });
+                }
+                n++;
+            }
+            context.SaveChanges();
+        }
     }
 
 }
