@@ -309,6 +309,7 @@
     <Content Include="Views\ClubMembers\Details.cshtml" />
     <Content Include="Views\ClubMembers\Edit.cshtml" />
     <Content Include="Views\ClubMembers\Index.cshtml" />
+    <Content Include="Views\ClubMembers\_ClubMembers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

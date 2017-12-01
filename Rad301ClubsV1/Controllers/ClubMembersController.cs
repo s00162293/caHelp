@@ -9,19 +9,26 @@ using System.Web;
 using System.Web.Mvc;
 using Rad301ClubsV1.Models.ClubModel;
 using Rad301ClubsV1.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace Rad301ClubsV1.Controllers
 {
     public class ClubMembersController : Controller
     {
+        //get studentID and MemberID
+            
+ 
+
         private ClubContext db = new ClubContext();
 
         // GET: ClubMembers
         public async Task<ActionResult> Index(string ClubName = null)
         {
-            using(ApplicationDbContext abd = new ApplicationDbContext())
+            ApplicationUser adminUser;
+            //   string studentId;
+            using (ApplicationDbContext abd = new ApplicationDbContext())
             {
-               var adminUser = GetApplicationUsersInRole(abd, User.Identity.Name)
+                adminUser = GetApplicationUsers(abd, User.Identity.Name)
                     .FirstOrDefault();
             }
             //return View(await db.Clubs.ToListAsync());
@@ -30,9 +37,25 @@ namespace Rad301ClubsV1.Controllers
                 .Where(c=> ClubName == null || c.ClubName.StartsWith(ClubName))
                 .ToListAsync()
                 );
+
         }
 
- public IEnumerable<ApplicationUser> GetApplicationUsersInRole(ApplicationDbContext context,
+        public IEnumerable<ApplicationUser> GetApplicationUsers(ApplicationDbContext context,
+                                            string userName)
+        {
+            return from user in context.Users
+                   where user.UserName == userName
+                   select user;
+        }
+
+        public PartialViewResult _ClubMembers(int id)
+        {
+            var qry = db.members.Where(m => m.ClubId == id).ToList();
+            return PartialView(qry);
+        }
+
+        /*
+        public IEnumerable<ApplicationUser> GetApplicationUsersInRole(ApplicationDbContext context,
                                                                          string userName)
         {
             return from role in context.Roles
@@ -44,6 +67,7 @@ namespace Rad301ClubsV1.Controllers
                    select user;
         }
 
+    */
 
         // GET: ClubMembers/Details/5
         public async Task<ActionResult> Details(int? id)

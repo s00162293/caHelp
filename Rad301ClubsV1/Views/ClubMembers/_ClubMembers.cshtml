@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Rad301ClubsV1.Models.ClubModel.Member>
+
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p> -->
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.student.Fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.student.Sname)
+        </th>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(m => item.StudentID)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.student.Fname)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.student.Sname)
+            </td>
+        <!--
+            <td>
+        @Html.ActionLink("Edit", "Edit", new { id=item.StudentID }) |
+        @Html.ActionLink("Details", "Details", new { id=item.StudentID }) |
+        @Html.ActionLink("Delete", "Delete", new { id=item.StudentID })
+            </td>  -->
+
+        </tr>
+        }
+    </table>
