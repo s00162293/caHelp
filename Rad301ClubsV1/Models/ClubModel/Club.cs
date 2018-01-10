@@ -14,6 +14,7 @@ namespace Rad301ClubsV1.Models.ClubModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClubId { get; set; }
+
         public string ClubName { get; set; }
 
         [Column(TypeName = "date")]
